@@ -166,15 +166,29 @@ class HardProblemsSimplerQuestions(Scene):
         right_center = np.array((4, 1, 0))
         left_center = np.array((-5, 1, 0))
         scale_factor = 0.7
-        fermat = dict([
-            (
-                sym, 
-                Mobject(*Texs(
-                    ["x","^"+sym,"+","y","^"+sym,"=","z","^"+sym]
-                ))
-            )
-            for sym in ["n", "2", "3"]
-        ])
+        fermat = dict(
+            [
+                (
+                    sym,
+                    Mobject(
+                        *Texs(
+                            [
+                                "x",
+                                "^" + sym,
+                                "+",
+                                "y",
+                                f'^{sym}',
+                                "=",
+                                "z",
+                                "^" + sym,
+                            ]
+                        )
+                    ),
+                )
+                for sym in ["n", "2", "3"]
+            ]
+        )
+
         # not_that_hard = TexText("(maybe not that hard...)").scale(0.5)
         fermat2, fermat2_jargon = Tex([
             r"&x^2 + y^2 = z^2 \\",
@@ -384,28 +398,19 @@ class NonGeneralPosition(CircleScene):
 class GeneralPositionRule(Scene):
     def __init__(self, *args, **kwargs):
         Scene.__init__(self, *args, **kwargs)
-        tuples = [
-            (
+        tuples = [(
                 np.arange(0, 2*np.pi, np.pi/3), 
                 "Not okay", 
                 list(zip(list(range(3)), list(range(3, 6))))
-            ),
-            (
+            ), (
                 RADIANS,
                 "Okay",
                 [],
-            ),
-            (
+            ), (
                 np.arange(0, 2*np.pi, np.pi/4),
                 "Not okay",
                 list(zip(list(range(4)), list(range(4, 8))))
-            ),
-            (
-                [2*np.pi*random() for x in range(5)],
-                "Okay",
-                [],
-            ),
-        ]
+            ), ([2*np.pi*random() for _ in range(5)], "Okay", [])]
         first_time = True
         for radians, words, pairs in tuples:
             cs = CircleScene(radians)
@@ -498,7 +503,7 @@ class IllustrateNChooseK(Scene):
             3 : "triplets",
             4 : "quadruplets",
         }
-        tuple_term = tuple_terms[k] if k in tuple_terms else "tuples"
+        tuple_term = tuple_terms.get(k, "tuples")
         if k == 2:
             str1 = r"{%d \choose %d} = \frac{%d(%d - 1)}{2}="%(n, k, n, n)
         elif k == 4:
@@ -773,10 +778,7 @@ class EulersFormula(GraphScene):
     def __init__(self, *args, **kwargs):
         GraphScene.__init__(self, *args, **kwargs)
         terms = "V - E + F =2".split(" ")
-        form = dict([
-            (key, mob)
-            for key, mob in zip(terms, Texs(terms))
-        ])
+        form = dict(list(zip(terms, Texs(terms))))
         for mob in list(form.values()):
             mob.shift((0, FRAME_Y_RADIUS-0.7, 0))
         formula = Mobject(*[form[k] for k in list(form.keys()) if k != "=2"])
@@ -867,8 +869,7 @@ class CannotDirectlyApplyEulerToMoser(CircleScene):
 
 class ShowMoserGraphLines(CircleScene):
     def __init__(self, radians, *args, **kwargs):
-        radians = list(set([x%(2*np.pi) for x in radians]))
-        radians.sort()
+        radians = sorted({x%(2*np.pi) for x in radians})
         CircleScene.__init__(self, radians, *args, **kwargs)
         n, plus_n_choose_4 = Tex(["n", "+{n \\choose 4}"]).split()
         n_choose_2, plus_2_n_choose_4, plus_n = Tex([

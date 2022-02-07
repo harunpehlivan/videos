@@ -68,11 +68,10 @@ def get_edges(image_array):
         image_array, 
         **DEFAULT_GAUSS_BLUR_CONFIG
     )
-    edges = cv2.Canny(
+    return cv2.Canny(
         blurred, 
         **DEFAULT_CANNY_CONFIG
     )
-    return edges
 
 def nearest_neighbor_align(mobject1, mobject2):
     distance_matrix = cdist(mobject1.points, mobject2.points)
@@ -261,7 +260,7 @@ class NewtonVsJohann(Scene):
         newton.next_to(greater_than, RIGHT)
         johann.next_to(greater_than, LEFT)
         self.add(johann, greater_than, newton)
-        for i in range(2):
+        for _ in range(2):
             kwargs = {
                 "path_func" : counterclockwise_path(),
                 "run_time"  : 2 

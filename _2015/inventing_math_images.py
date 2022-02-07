@@ -30,7 +30,7 @@ class SimpleText(Scene):
     ]
     @staticmethod
     def args_to_string(text):
-        return initials([c for c in text if c in string.letters + " "])
+        return initials([c for c in text if c in f'{string.letters} '])
 
     def construct(self, text):
         self.add(TexText(text))

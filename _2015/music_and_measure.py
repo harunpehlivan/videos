@@ -135,11 +135,13 @@ class Vibrate(Animation):
     def __init__(self, **kwargs):
         digest_config(self, kwargs)
         def func(x, t):
-            return sum([
-                (self.amplitude/((k+1)**2.5))*np.sin(2*mult*t)*np.sin(k*mult*x)
+            return sum(
+                (self.amplitude / ((k + 1) ** 2.5))
+                * np.sin(2 * mult * t)
+                * np.sin(k * mult * x)
                 for k in range(self.overtones)
-                for mult in [(self.num_periods+k)*np.pi]
-            ])
+                for mult in [(self.num_periods + k) * np.pi]
+            )
         self.func = func
         Animation.__init__(self, Mobject1D(color = self.color), **kwargs)
 
@@ -348,7 +350,7 @@ class ChallengeOne(Scene):
 
     def vibrate(self, num_repeats, *top_vibrations):
         anims = [self.bottom_vibration] + list(top_vibrations)
-        for count in range(num_repeats):
+        for _ in range(num_repeats):
             self.play(*anims)
         self.remove(*[a.mobject for a in anims])
 
@@ -400,9 +402,7 @@ class JustByAnalyzingTheNumber(Scene):
             if last:
                 self.play(DelayByOrder(Transform(last, mob, run_time = 0.5)))
                 self.remove(last)
-                self.add(mob)
-            else:
-                self.add(mob)
+            self.add(mob)
             self.wait()
             last = mob
 
@@ -503,7 +503,7 @@ class DecomposeMusicalNote(Scene):
         kwargs["rate_func"] = None
         kwargs["run_time"] = 1.0
         sine.to_edge(LEFT, buff = 0)
-        for x in range(5):
+        for _ in range(5):
             self.play(ApplyMethod(sine.shift, 85*LEFT, **kwargs))
 
 class DecomposeTwoFrequencies(Scene):
@@ -793,9 +793,7 @@ class PowersOfTwelfthRoot(Scene):
             frac_mob = Tex("%d/%d"%(frac.numerator, frac.denominator))
             frac_mob.scale(0.5).next_to(words)
             percent_error = abs(100*((value - frac) / frac))
-            error_string = TexText([
-                "with", str(percent_error)[:4] + "\\%", "error"
-            ])
+            error_string = TexText(["with", f'{str(percent_error)[:4]}\\%', "error"])
             error_string = error_string.split()
             error_string[1].set_color()
             error_string = Mobject(*error_string)
@@ -1358,7 +1356,7 @@ class ZoomInOnSqrt2Over2(IntervalScene):
         arrow = Arrow(point+UP, point)
         irr.next_to(arrow, UP)
         self.play(ShimmerIn(irr), ShowCreation(arrow))
-        for count in range(4):
+        for _ in range(4):
             self.remove(*intervals)
             self.remove(*lines)
             self.zoom_in_on(np.sqrt(2)/2, 20)

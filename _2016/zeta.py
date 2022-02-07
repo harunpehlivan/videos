@@ -141,10 +141,13 @@ class TestZetaOnHalfPlane(ZetaTransformationScene):
         self.add_transformable_plane()
         self.add_extra_plane_lines_for_zeta()
         self.prepare_for_transformation(self.plane)
-        print(sum([
-            mob.get_num_points()
-            for mob in self.plane.family_members_with_points()
-        ]))
+        print(
+            sum(
+                mob.get_num_points()
+                for mob in self.plane.family_members_with_points()
+            )
+        )
+
         print(len(self.plane.family_members_with_points()))
         self.apply_zeta_function()
         self.wait()
@@ -663,7 +666,7 @@ class DefineForRealS(PiCreatureScene):
     def transition_to_new_input(self, zeta_def, exponent, final_sum):
         new_zeta_def = self.get_definition(str(exponent))[0]
         lines, braces, dots, final_dot = self.get_sum_lines(exponent)
-        final_sum = Tex("=" + final_sum)
+        final_sum = Tex(f'={final_sum}')
         final_sum.next_to(new_zeta_def[1][-1])
         final_sum.shift(SMALL_BUFF*UP)
         self.play(
@@ -961,7 +964,7 @@ class FromRealToComplex(ComplexTransformationScene):
         self.play(Blink(randy))
         self.play(Transform(frac, new_frac))
         self.play(Write(words))
-        for x in range(2):
+        for _ in range(2):
             self.wait(2)
             self.play(Blink(randy))
         self.play(
@@ -1158,7 +1161,7 @@ class FromRealToComplex(ComplexTransformationScene):
         for x in range(num_shown_terms):
             inputs.add(*sum_terms[3*x+1])
 
-        output = Tex("= \\," + output_string)
+        output = Tex(f'= \\,{output_string}')
         output.next_to(sum_terms, RIGHT)
         output.set_color(self.output_color)
 
@@ -1400,10 +1403,7 @@ class ComplexExponentiation(Scene):
         self.wait()
 
     def z_to_point(self, z, is_input = True):
-        if is_input:
-            plane = self.left_plane
-        else:
-            plane = self.right_plane
+        plane = self.left_plane if is_input else self.right_plane
         return plane.num_pair_to_point((z.real, z.imag))
 
 class SizeAndRotationBreakdown(Scene):
@@ -2219,8 +2219,9 @@ class IntroduceAnglePreservation(VisualizingSSquared):
             complex(x, y)
             for x in np.arange(-5, 5, 0.5)
             for y in np.arange(0, 3, 0.5)
-            if not (x <= 0 and y == 0)
+            if x > 0 or y != 0
         ]
+
         brackets = VGroup(*list(map(
             self.get_right_angle_bracket,
             intersection_inputs
@@ -2715,7 +2716,7 @@ class MathematiciansLookingAtFunctionEquation(Scene):
 
         mathy = Mathematician().to_corner(DOWN+LEFT)
         mathys = VGroup(mathy)
-        for x in range(2):
+        for _ in range(2):
             mathys.add(Mathematician().next_to(mathys))
         for mathy in mathys:
             mathy.change_mode("pondering")
@@ -2877,7 +2878,7 @@ class DiscussZeros(ZetaTransformationScene):
             FadeIn(primes),
             *self.get_dot_wandering_anims()
         )
-        for x in range(7):
+        for _ in range(7):
             self.play(*self.get_dot_wandering_anims())
         self.play(
             GrowFromCenter(photo),
@@ -3224,7 +3225,7 @@ class CreditTwo(Scene):
             Animation(morty)
         )
         self.play(morty.change_mode, "happy")
-        for x in range(4):
+        for _ in range(4):
             self.wait()
             self.play(Blink(morty))
         self.wait()
@@ -3240,7 +3241,7 @@ class CreditTwo(Scene):
             brother.change_mode, "happy",
             brother.look, LEFT
         )
-        for x in range(10):
+        for _ in range(10):
             self.play(Blink(morty))
             self.wait()
             self.play(Blink(brother))

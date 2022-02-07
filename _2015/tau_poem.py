@@ -60,7 +60,7 @@ FORMULAE = [
 ]
 
 DIGITS = list(map(str, list("62831853071795864769")))
-DIGITS[1] = "." + DIGITS[1] #2->.2
+DIGITS[1] = f'.{DIGITS[1]}'
 
 BUFF = 1.0
 

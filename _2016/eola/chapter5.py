@@ -211,12 +211,13 @@ class ShearExample(DiagonalExample):
         "transposed_matrix" : [[1, 0], [1, 1]]
     }
 
+
+
 class ShearExampleWithSquare(DiagonalExample):
     CONFIG = {
-        "show_square" : True, 
-        "show_coordinates" : True,
-        "show_coordinates" : False,
-        "transposed_matrix" : [[1, 0], [1, 1]]
+        "show_square": True,
+        "show_coordinates": False,
+        "transposed_matrix": [[1, 0], [1, 1]],
     }
 
 class ThisSquareTellsEverything(LinearTransformationScene):
@@ -412,7 +413,7 @@ class NextFewVideos(Scene):
         icon.set_width(FRAME_WIDTH/12.)
         icon.set_stroke(color = WHITE, width = 0)
         icon.set_fill(WHITE, opacity = 1)
-        icons = VMobject(*[icon.copy() for x in range(10)])
+        icons = VMobject(*[icon.copy() for _ in range(10)])
         icons.set_submobject_colors_by_gradient(BLUE_A, BLUE_D)
         icons.arrange(RIGHT)
         icons.to_edge(LEFT)
@@ -857,10 +858,7 @@ class TwoDDeterminantFormula(Scene):
         VMobject(b, d).set_color(Y_COLOR)
 
         for mob in mb, mc, b, c:
-            if mob is c:
-                mob.zero = Tex("\\cdot 0")
-            else:
-                mob.zero = Tex("0")
+            mob.zero = Tex("\\cdot 0") if mob is c else Tex("0")
             mob.zero.move_to(mob, aligned_edge = DOWN+LEFT)
             mob.zero.set_color(mob.get_color())
             mob.original = mob.copy()

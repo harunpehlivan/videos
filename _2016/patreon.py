@@ -43,10 +43,7 @@ class SideGigToFullTime(Scene):
         self.cross = cross
 
     def income(self, morty):
-        dollar_signs = VGroup(*[
-            Tex("\\$")
-            for x in range(10)
-        ])
+        dollar_signs = VGroup(*[Tex("\\$") for _ in range(10)])
         dollar_signs.arrange(RIGHT, buff = LARGE_BUFF)
         dollar_signs.set_color(BLACK)
         dollar_signs.next_to(morty.eyes, RIGHT, buff = 2*LARGE_BUFF)
@@ -57,7 +54,7 @@ class SideGigToFullTime(Scene):
             dollar_signs.shift, LEFT,
             dollar_signs.set_color, GREEN
         )
-        for x in range(5):
+        for _ in range(5):
             last_sign = dollar_signs[0]
             dollar_signs.remove(last_sign)
             self.play(
@@ -108,7 +105,7 @@ class TakesTime(Scene):
         clock.next_to(rect, LEFT, buff = LARGE_BUFF)
         self.add(rect)
         self.play(ShowCreation(clock))
-        for x in range(3):
+        for _ in range(3):
             self.play(ClockPassesTime(clock))
 
 class GrowingToDoList(Scene):
@@ -228,14 +225,14 @@ class TwoTypesOfVideos(Scene):
             morty.look_at, box,
             ShowCreation(box)
         )
-        for x in range(3):
+        for _ in range(3):
             self.wait(2)
-            self.play(Blink(morty))            
+            self.play(Blink(morty))
         self.play(
             morty.change_mode, "raise_left_hand",
             morty.look_at, series
         )
-        for i, words in enumerate(series_list):
+        for words in series_list:
             self.play(Write(words), run_time = 1)
         self.play(Blink(morty))
         self.wait()
@@ -519,13 +516,15 @@ class MakeALotOfPiCreaturesHappy(Scene):
     def construct(self):
         width = 7
         height = 4
-        pis = VGroup(*[
-            VGroup(*[
-                Randolph()
-                for x in range(7)
-            ]).arrange(RIGHT, buff = MED_LARGE_BUFF)
-            for x in range(4)
-        ]).arrange(DOWN, buff = MED_LARGE_BUFF)
+        pis = VGroup(
+            *[
+                VGroup(*[Randolph() for _ in range(7)]).arrange(
+                    RIGHT, buff=MED_LARGE_BUFF
+                )
+                for x in range(4)
+            ]
+        ).arrange(DOWN, buff=MED_LARGE_BUFF)
+
 
         pi_list = list(it.chain(*[
             layer.submobjects
@@ -552,7 +551,7 @@ class MakeALotOfPiCreaturesHappy(Scene):
                 lag_ratio = 0.5,
             )
         )
-        for x in range(10):
+        for _ in range(10):
             pi = random.choice(pi_list)
             self.play(Blink(pi))
 

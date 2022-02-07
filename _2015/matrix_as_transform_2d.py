@@ -42,12 +42,11 @@ class ShowMultiplication(NumberLineScene):
     @staticmethod
     def string_to_args(string):
         parts = string.split()
-        if len(parts) == 2:
-            num, original_line = parts
-            show_original_line = original_line == "WithCopiedOriginalLine"
-            return float(num), False
-        else:
+        if len(parts) != 2:
             return float(parts[0]), False
+        num, original_line = parts
+        show_original_line = original_line == "WithCopiedOriginalLine"
+        return float(num), False
 
     def construct(self, num, show_original_line):
         config = {
@@ -191,11 +190,13 @@ class TransformScene2D(Scene):
         )
         self.add(self.x_arrow, self.y_arrow)
         self.number_plane.filter_out(
-            lambda x_y_z : (0 < x_y_z[0]) and (x_y_z[0] < 1) and (abs(x_y_z[1]) < 0.1)
+            lambda x_y_z: x_y_z[0] > 0 and x_y_z[0] < 1 and abs(x_y_z[1]) < 0.1
         )
+
         self.number_plane.filter_out(
-            lambda x_y_z1 : (0 < x_y_z1[1]) and (x_y_z1[1] < 1) and (abs(x_y_z1[0]) < 0.1)
+            lambda x_y_z1: x_y_z1[1] > 0 and x_y_z1[1] < 1 and abs(x_y_z1[0]) < 0.1
         )
+
         return self
 
 
@@ -259,10 +260,7 @@ class ShowMatrixTransform(TransformScene2D):
         self.wait()
 
     def get_density_factor(self, matrix):
-        max_norm = max([
-            abs(get_norm(column))
-            for column in np.transpose(matrix)
-        ])
+        max_norm = max(abs(get_norm(column)) for column in np.transpose(matrix))
         return max(max_norm, 1)
 
     def get_path_func(self, matrix):
@@ -515,10 +513,7 @@ class ShowMatrixTransformWithDot(TransformScene2D):
         self.remove(x_arrow_copy, y_arrow_copy)        
 
     def get_density_factor(self, matrix):
-        max_norm = max([
-            abs(get_norm(column))
-            for column in np.transpose(matrix)
-        ])
+        max_norm = max(abs(get_norm(column)) for column in np.transpose(matrix))
         return max(max_norm, 1)
 
     def get_path_func(self, matrix):

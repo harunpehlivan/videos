@@ -104,7 +104,7 @@ class DrawAllThreeSquares(Scene):
         c = c_square()
         self.add(Triangle(), a, b, c)
         for letter, mob in zip("abc", [a, b, c]):
-            char_mob = Tex(letter+"^2").scale(TEX_MOB_SCALE_FACTOR)
+            char_mob = Tex(f'{letter}^2').scale(TEX_MOB_SCALE_FACTOR)
             char_mob.shift(mob.get_center())
             self.add(char_mob)
 
@@ -263,7 +263,7 @@ class DrawOnlyABSquares(Scene):
         a = a_square()
         b = b_square()
         for char, mob in zip("ab", [a, b]):
-            symobl = Tex(char+"^2").scale(TEX_MOB_SCALE_FACTOR)
+            symobl = Tex(f'{char}^2').scale(TEX_MOB_SCALE_FACTOR)
             symobl.shift(mob.get_center())
             self.add(symobl)
         triangle = Triangle()
@@ -282,7 +282,7 @@ class AddTriangleCopyToABSquares(DrawOnlyABSquares):
         for mob in self.mobjects:
             if isinstance(mob, Triangle):
                 vertices = list(mob.get_vertices())
-                for x in range(2):
+                for _ in range(2):
                     self.set_color_region(region_from_polygon_vertices(
                         *vertices
                     ), color = BLUE_D)
@@ -385,11 +385,21 @@ class ZoomInOnTroublePoint(Scene):
         circle = Circle(radius = 2.5, color = WHITE)
         angle1_arc = Circle(color = WHITE)
         angle2_arc = Circle(color = WHITE).scale(0.5)
-        angle1_arc.filter_out(lambda x_y_z2 : not (x_y_z2[0] > 0 and x_y_z2[1] > 0 and x_y_z2[1] < x_y_z2[0]/3))
-        angle2_arc.filter_out(lambda x_y_z3 : not (x_y_z3[0] < 0 and x_y_z3[1] > 0 and x_y_z3[1] < -3*x_y_z3[0]))
+        angle1_arc.filter_out(
+            lambda x_y_z2: x_y_z2[0] <= 0
+            or x_y_z2[1] <= 0
+            or x_y_z2[1] >= x_y_z2[0] / 3
+        )
+
+        angle2_arc.filter_out(
+            lambda x_y_z3: x_y_z3[0] >= 0
+            or x_y_z3[1] <= 0
+            or x_y_z3[1] >= -3 * x_y_z3[0]
+        )
+
 
         self.add_mobjects_among(list(locals().values()))
-        self.add_elbow()        
+        self.add_elbow()
         if rotate:
             for mob in self.mobjects:
                 mob.rotate(np.pi/2)
@@ -421,12 +431,26 @@ class DrawTriangleWithAngles(Scene):
         triangle.scale(2).center().add_all_letters()
         vertices = triangle.get_vertices()
         kwargs = {"color" : WHITE}
-        angle1_arc = Circle(radius = 0.4, **kwargs).filter_out(
-            lambda x_y_z : not(x_y_z[0] > 0 and x_y_z[1] < 0 and x_y_z[1] < -3*x_y_z[0])
-        ).shift(vertices[1])
-        angle2_arc = Circle(radius = 0.2, **kwargs).filter_out(
-            lambda x_y_z1 : not(x_y_z1[0] < 0 and x_y_z1[1] > 0 and x_y_z1[1] < -3*x_y_z1[0])
-        ).shift(vertices[2])
+        angle1_arc = (
+            Circle(radius=0.4, **kwargs)
+            .filter_out(
+                lambda x_y_z: x_y_z[0] <= 0
+                or x_y_z[1] >= 0
+                or x_y_z[1] >= -3 * x_y_z[0]
+            )
+            .shift(vertices[1])
+        )
+
+        angle2_arc = (
+            Circle(radius=0.2, **kwargs)
+            .filter_out(
+                lambda x_y_z1: x_y_z1[0] >= 0
+                or x_y_z1[1] <= 0
+                or x_y_z1[1] >= -3 * x_y_z1[0]
+            )
+            .shift(vertices[2])
+        )
+
         alpha = Tex("\\alpha")
         beta = Tex("90-\\alpha")
         alpha.shift(vertices[1]+3*RIGHT+DOWN)

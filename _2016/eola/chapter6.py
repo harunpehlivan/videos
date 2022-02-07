@@ -156,7 +156,7 @@ class StockLine(VMobject):
     }
     def init_points(self):
         points = [ORIGIN]
-        for x in range(self.num_points):
+        for _ in range(self.num_points):
             step_size = self.step_range*(random.random() - 0.5)
             points.append(points[-1] + 0.5*RIGHT + step_size*UP)
         self.set_points_as_corners(points)
@@ -190,10 +190,10 @@ class MachineLearningNetwork(Scene):
 
         layers = []
         for i, num_nodes in enumerate([3, 4, 4, 1]):
-            layer = VMobject(*[
-                Circle(radius = 0.5, color = YELLOW)
-                for x in range(num_nodes)
-            ])
+            layer = VMobject(
+                *[Circle(radius=0.5, color=YELLOW) for _ in range(num_nodes)]
+            )
+
             for j, mob in enumerate(layer.split()):
                 sym = Tex("x_{%d, %d}"%(i, j))
                 sym.move_to(mob)
@@ -1310,7 +1310,7 @@ class TowDColumnsDontSpan(LinearTransformationScene):
         bases = [self.i_hat, self.j_hat]
         for mob in bases:
             mob.original = mob.copy()
-        for x in range(8):
+        for _ in range(8):
             for mob in bases:
                 mob.target = mob.original.copy()
                 mob.target.set_stroke(width = 6)
