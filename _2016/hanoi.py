@@ -28,10 +28,11 @@ class CountingScene(Scene):
         down_right = (0.5)*RIGHT + (np.sqrt(3)/2)*DOWN
         result = []
         for down_right_steps in range(5):
-            for left_steps in range(down_right_steps):
-                result.append(
-                    down_right_steps*down_right + left_steps*LEFT
-                )
+            result.extend(
+                down_right_steps * down_right + left_steps * LEFT
+                for left_steps in range(down_right_steps)
+            )
+
         return reversed(result[:self.base])
 
     def get_dot_template(self):
@@ -70,7 +71,7 @@ class CountingScene(Scene):
         self.curr_configurations.append(VGroup())
 
     def count(self, max_val, run_time_per_anim = 1):
-        for x in range(max_val):
+        for _ in range(max_val):
             self.increment(run_time_per_anim)
 
     def increment(self, run_time_per_anim = 1, added_anims = [], total_run_time = None):
@@ -210,9 +211,9 @@ class CountInDecimal(CountingScene):
     def construct(self):
         for x in range(11):
             self.increment()
-        for x in range(85):
+        for _ in range(85):
             self.increment(0.25)
-        for x in range(20):
+        for _ in range(20):
             self.increment()
 
 class CountInTernary(CountingScene):
@@ -229,7 +230,7 @@ class CountInTernary(CountingScene):
 
 class CountTo27InTernary(CountInTernary):
     def construct(self):
-        for x in range(27):
+        for _ in range(27):
             self.increment()
         self.wait()
 
@@ -330,8 +331,7 @@ class TowersOfHanoiScene(Scene):
         raise Exception("Somehow this disk wasn't accounted for...")
 
     def min_disk_index_on_peg(self, peg_index):
-        disk_index_set = self.disk_tracker[peg_index]
-        if disk_index_set:
+        if disk_index_set := self.disk_tracker[peg_index]:
             return min(self.disk_tracker[peg_index])
         else:
             return self.num_disks
@@ -357,7 +357,7 @@ class TowersOfHanoiScene(Scene):
 
     def set_disk_config(self, peg_indices):
         assert(len(peg_indices) == self.num_disks)
-        self.disk_tracker = [set([]) for x in range(3)]
+        self.disk_tracker = [set([]) for _ in range(3)]
         for n, peg_index in enumerate(peg_indices):
             disk_index = self.num_disks - n - 1
             disk = self.disks[disk_index]
@@ -434,16 +434,14 @@ class ConstrainedTowersOfHanoiScene(TowersOfHanoiScene):
 def get_ruler_sequence(order = 4):
     if order == -1:
         return []
-    else:
-        smaller = get_ruler_sequence(order - 1)
-        return smaller + [order] + smaller
+    smaller = get_ruler_sequence(order - 1)
+    return smaller + [order] + smaller
 
 def get_ternary_ruler_sequence(order = 4):
     if order == -1:
         return []
-    else:
-        smaller = get_ternary_ruler_sequence(order-1)
-        return smaller+[order]+smaller+[order]+smaller
+    smaller = get_ternary_ruler_sequence(order-1)
+    return smaller+[order]+smaller+[order]+smaller
 
 class SolveHanoi(TowersOfHanoiScene):
     def construct(self):
@@ -908,7 +906,7 @@ class RhythmOfDecimalCounting(CountingScene):
         "num_start_location" : DOWN
     }
     def construct(self):
-        for x in range(10):
+        for _ in range(10):
             self.increment()
         brace = Brace(self.number_mob)
         two_digits = brace.get_text("Two digits")
@@ -937,7 +935,7 @@ class RhythmOfDecimalCounting(CountingScene):
             *list(map(FadeOut, [brace, two_digits]))
         )
 
-        for x in range(89):
+        for _ in range(89):
             self.increment(run_time_per_anim = 0.25)
         self.increment(run_time_per_anim = 1)
         self.wait()
@@ -987,7 +985,7 @@ class DecimalCountingAtHundredsScale(CountingScene):
 
         for x in range(10):
             this_range = list(range(8)) if x == 0 else list(range(9))
-            for y in this_range:
+            for _ in this_range:
                 self.increment(run_time_per_anim = 0.25)
             self.increment(run_time_per_anim = 1)
 
@@ -1098,7 +1096,7 @@ class IntroduceBinaryCounting(BinaryCountingScene):
         self.play(*list(map(FadeOut, [bubble, curr_content])))
 
         #Up to 1000
-        for x in range(4):
+        for _ in range(4):
             self.increment()
         brace.target = Brace(self.number_mob[-1])
         twos_place.target = brace.get_text("Eight's place")
@@ -1107,10 +1105,10 @@ class IntroduceBinaryCounting(BinaryCountingScene):
             randy.look_at, self.number_mob,
             *list(map(MoveToTarget, [brace, twos_place]))
         )
-        for x in range(8):
+        for _ in range(8):
             self.increment(total_run_time = 1)
         self.wait()
-        for x in range(8):
+        for _ in range(8):
             self.increment(total_run_time = 1.5)
 
     def show_self_similarity(self):
@@ -1469,11 +1467,11 @@ class RecursiveSolution(TowersOfHanoiScene):
             big_disk.set_fill, GREEN,
             big_disk.label.set_fill, BLACK,
         )
-        big_disk.add(self.eyes)        
+        big_disk.add(self.eyes)
         self.blink()
         self.wait()
         self.change_mode("angry")
-        for x in range(2):
+        for _ in range(2):
             self.wait()
             self.shake(big_disk)
             self.blink()
@@ -1825,12 +1823,11 @@ class ShowFourDiskFourBitsParallel(IntroduceSolveByCounting):
         #         run_time = run_time
         #     )
         self.play(
-            Succession(*[
-                self.get_increment_animation()
-                for x in range(num_tasks)
-            ]),
+            Succession(
+                *[self.get_increment_animation() for _ in range(num_tasks)]
+            ),
             rate_func=linear,
-            run_time = self.subtask_run_time
+            run_time=self.subtask_run_time,
         )
 
     def get_increment_animation(self):

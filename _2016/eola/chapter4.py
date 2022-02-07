@@ -1042,13 +1042,13 @@ class GoPlay(TeacherStudentsScene):
         student = self.get_students()[-1]
         bubble = ThoughtBubble(direction = RIGHT, width = 6, height = 5)
         bubble.pin_to(student, allow_flipping = False)
-        bubble.make_green_screen()        
+        bubble.make_green_screen()
         self.play(
             ShowCreation(bubble),
             student.look, UP+LEFT,
         )
         self.play(student.change_mode, "pondering")
-        for x in range(3):
+        for _ in range(3):
             self.random_blink()
             self.wait(2)
 

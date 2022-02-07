@@ -107,7 +107,7 @@ class BufferedCounting(SceneFromVideo):
             for dim, spread in zip(self.shape, spreads)
         ]
         for frame, index in zip(self.frames, it.count()):
-            print(index + "of" + len(self.frames))
+            print(f'{index}of' + len(self.frames))
             blurred = cv2.GaussianBlur(frame, ksize, sigmaX)
             edged = cv2.Canny(blurred, threshold1, threshold2)
             buffed = reduce(np.dot, [matrices[0], edged, matrices[1]])
@@ -130,7 +130,7 @@ class ClearLeftSide(SceneFromVideo):
         return scenename
 
     def construct(self, scenename):
-        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, scenename + ".mp4")
+        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, f'{scenename}.mp4')
         SceneFromVideo.construct(self, path)
         self.set_color_region_over_time_range(
             Region(lambda x, y : x < -1, shape = self.shape)
@@ -148,7 +148,7 @@ class DraggedPixels(SceneFromVideo):
         return args[0]
 
     def construct(self, video):
-        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, video+".mp4")
+        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, f'{video}.mp4')
         SceneFromVideo.construct(self, path)
         self.drag_pixels()
 
@@ -184,7 +184,7 @@ class ShowCounting(SceneFromVideo):
         return filename
 
     def construct(self, filename):
-        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, filename + ".mp4")
+        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, f'{filename}.mp4')
         SceneFromVideo.construct(self, path)
         total_time = len(self.frames)*self.frame_duration
         for count in range(32):
@@ -208,10 +208,10 @@ class ShowFrameNum(SceneFromVideo):
         return filename
 
     def construct(self, filename):
-        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, filename+".mp4")
+        path = os.path.join(VIDEO_DIR, MOVIE_PREFIX, f'{filename}.mp4')
         SceneFromVideo.construct(self, path)
         for frame, count in zip(self.frames, it.count()):
-            print(count + "of" + len(self.frames))
+            print(f'{count}of' + len(self.frames))
             mob = Mobject(*[
                 Tex(char).shift(0.3*x*RIGHT)
                 for char, x, in zip(str(count), it.count())

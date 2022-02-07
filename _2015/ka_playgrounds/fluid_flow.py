@@ -303,7 +303,7 @@ class ConstantInwardFlow(FluidFlow):
         self.add_axes()
         self.add_vectors()
         self.add_dots()
-        for x in range(5):
+        for _ in range(5):
             self.flow(
                 run_time = 5,
                 rate_func=linear,
@@ -320,7 +320,7 @@ class ConstantOutwardFlow(FluidFlow):
         self.add_axes()
         self.add_vectors()
         self.add_dots()
-        for x in range(10):
+        for _ in range(10):
             self.flow(rate_func=linear)
             dot = self.dots.split()[0].copy()
             dot.center()
@@ -345,7 +345,7 @@ class ConstantPositiveCurl(FluidFlow):
         self.add_axes()
         self.add_vectors(true_length = True)
         self.add_dots()
-        for x in range(10):
+        for _ in range(10):
             self.flow(
                 rate_func=linear
             )
@@ -377,7 +377,7 @@ class SingleSwirl(FluidFlow):
         self.add_axes()
         self.add_vectors()
         self.add_dots()
-        for x in range(10):
+        for _ in range(10):
             self.flow(rate_func=linear)
 
 

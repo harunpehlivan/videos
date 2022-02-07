@@ -746,10 +746,7 @@ class AddTwoFunctions(FunctionGraphScene):
         for group in dots, dots.target:
             group.set_color(sum_lines[0].get_color())
         self.play(ShowCreation(dots))
-        if len(list(g_lines)) == 1:
-            kwargs = {}
-        else:
-            kwargs = {
+        kwargs = {} if len(list(g_lines)) == 1 else {
                 "lag_ratio" : 0.5,
                 "run_time" : 3
             }
@@ -1020,10 +1017,10 @@ class ManyFunctions(FunctionGraphScene):
             else:
                 run_time = 0.2
             added_anims = []
-            if i == 3:
-                added_anims = [randy.change_mode, "confused"]
             if i == 10:
                 added_anims = [randy.change_mode, "pleading"]
+            elif i == 3:
+                added_anims = [randy.change_mode, "confused"]
             self.add_random_function(
                 run_time = run_time,
                 added_anims = added_anims
@@ -1032,7 +1029,7 @@ class ManyFunctions(FunctionGraphScene):
     def add_random_function(self, run_time = 1, added_anims = []):
         coefs = np.random.randint(-3, 3, np.random.randint(3, 8))
         def func(x):
-            return sum([c*x**(i) for i, c, in enumerate(coefs)])
+            return sum(c*x**(i) for i, c, in enumerate(coefs))
         graph = self.get_function_graph(func, animate = False)
         if graph.get_height() > FRAME_HEIGHT:
             graph.stretch_to_fit_height(FRAME_HEIGHT)
@@ -1651,15 +1648,16 @@ class IntroducePolynomialSpace(Scene):
         terms = [
             VGroup(*target[6:8]),
             VGroup(target[5], *target[3:5]),
-            VGroup(target[2], *target[0:2]),
+            VGroup(target[2], *target[:2]),
         ]
+
         target[5].next_to(target[3], LEFT)
         target[2].next_to(target[0], LEFT)
         more_terms = [
             Tex("+0", "x^3").set_color_by_tex("x^3", MAROON_B),
             Tex("+0", "x^4").set_color_by_tex("x^4", YELLOW),
             Tex("\\vdots")
-        ]        
+        ]
         for entry, term in zip(entries, terms+more_terms):
             term.next_to(entry, LEFT, buff = LARGE_BUFF)
         more_terms[-1].shift(MED_SMALL_BUFF*LEFT)

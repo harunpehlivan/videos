@@ -173,7 +173,7 @@ class DrawComplexAngleAndMagnitude(Scene):
         ])
 
     def construct(self, *reps_and_nums):
-        radius = max([abs(n.imag) for r, n in reps_and_nums]) + 1
+        radius = max(abs(n.imag) for r, n in reps_and_nums) + 1
         plane_config = {
             "color" : "grey",
             "unit_to_spatial_width" : FRAME_Y_RADIUS / radius,

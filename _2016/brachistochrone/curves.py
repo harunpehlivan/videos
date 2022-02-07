@@ -154,11 +154,10 @@ class PathSlidingScene(Scene):
                 curr_index += 1
                 if curr_index == len(points):
                     break
-        if self.wait_and_add:
-            self.add(self.slider)
-            self.wait()
-        else:
+        if not self.wait_and_add:
             return self.slider
+        self.add(self.slider)
+        self.wait()
 
     def get_time_slices(self, points, ceiling = None):
         dt_list = np.zeros(len(points))

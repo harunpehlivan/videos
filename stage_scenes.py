@@ -46,21 +46,20 @@ def stage_scenes(module_name):
     sorted_files = []
     for scene_class in scene_classes:
         scene_name = scene_class.__name__
-        clips = [f for f in files if f.startswith(scene_name + ".")]
-        for clip in clips:
-            sorted_files.append(os.path.join(animation_dir, clip))
-        # Partial movie file directory
-        # movie_dir = get_movie_output_directory(
-        #     scene_class, **output_directory_kwargs
-        # )
-        # if os.path.exists(movie_dir):
-        #     for extension in [".mov", ".mp4"]:
-        #         int_files = get_sorted_integer_files(
-        #             pmf_dir, extension=extension
-        #         )
-        #         for file in int_files:
-        #             sorted_files.append(os.path.join(pmf_dir, file))
-        # else:
+        clips = [f for f in files if f.startswith(f'{scene_name}.')]
+        sorted_files.extend(os.path.join(animation_dir, clip) for clip in clips)
+            # Partial movie file directory
+            # movie_dir = get_movie_output_directory(
+            #     scene_class, **output_directory_kwargs
+            # )
+            # if os.path.exists(movie_dir):
+            #     for extension in [".mov", ".mp4"]:
+            #         int_files = get_sorted_integer_files(
+            #             pmf_dir, extension=extension
+            #         )
+            #         for file in int_files:
+            #             sorted_files.append(os.path.join(pmf_dir, file))
+            # else:
 
     # animation_subdir = os.path.dirname(animation_dir)
     count = 0

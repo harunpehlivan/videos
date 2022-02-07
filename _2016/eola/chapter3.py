@@ -632,13 +632,11 @@ class TrackBasisVectorsExample(LinearTransformationScene):
             (self.i_hat, "\\hat{\\imath}", X_COLOR),
             (self.j_hat, "\\hat{\\jmath}", Y_COLOR),
         ]
-        label_mobs = []
-        for vect, label, color in triplets:
-            label_mobs.append(self.add_transformable_label(
+        label_mobs = [self.add_transformable_label(
                 vect, label, "\\text{Transformed } " + label,
                 color = color,
                 direction = "right",
-            ))
+            ) for vect, label, color in triplets]
         self.i_label, self.j_label = label_mobs
 
     def introduce_vector(self):

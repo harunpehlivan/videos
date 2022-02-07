@@ -113,7 +113,7 @@ class ManyPrerequisites(Scene):
 
         rect = Rectangle(height = 9, width = 16, color = BLUE)
         rect.set_width(FRAME_X_RADIUS-2)
-        rects = [rect]+[rect.copy() for i in range(3)]
+        rects = [rect] + [rect.copy() for _ in range(3)]
         words = [
             "Linear transformations",
             "Determinants",
@@ -1287,7 +1287,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         movers = [rect, three, two, l_bracket, r_bracket, lamb, lamb_copy]
         for mover in movers:
             mover.target = mover.copy()
-        minus1, minus2 = [Tex("-") for x in range(2)]
+        minus1, minus2 = [Tex("-") for _ in range(2)]
         new_three = VGroup(three.target, minus1, lamb.target)
         new_three.arrange()
         new_three.move_to(three)
@@ -1299,7 +1299,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         rect.target = BackgroundRectangle(
             VGroup(l_bracket.target, r_bracket.target)
         )
-        result = list(map(MoveToTarget, movers)) 
+        result = list(map(MoveToTarget, movers))
         result += list(map(Write, [minus1, minus2]))
         result += list(map(Animation, [
             self.matrix.get_mob_matrix()[i, 1-i]

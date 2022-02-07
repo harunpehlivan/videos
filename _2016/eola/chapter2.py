@@ -692,9 +692,9 @@ class VectorsOnALine(VectorsToDotsScene):
 
     def play_final_animation(self, vectors, rate_functions):
         line_copies = [
-            Line(vectors[0].get_end(), vectors[-1].get_end())
-            for v in vectors
+            Line(vectors[0].get_end(), vectors[-1].get_end()) for _ in vectors
         ]
+
         self.play(*[
             Transform(v, mob, rate_func = rf, run_time = 2)
             for v, mob, rf in zip(vectors, line_copies, rate_functions)

@@ -120,10 +120,10 @@ def five_char_binary(num):
     return (5-len(result))*"0" + result
 
 def read_reversed_binary(string):
-    return sum([
-        2**count if char == '1' else 0
+    return sum(
+        2 ** count if char == '1' else 0
         for count, char in zip(it.count(), string)
-    ])
+    )
 
 class LeftHand(Hand):
     def __init__(self, num, **kwargs):
@@ -193,7 +193,7 @@ class ShowFrameNum(OverHand):
     def construct(self):
         OverHand.construct(self)
         for frame, count in zip(self.frames, it.count()):
-            print(count + "of" + len(self.frames))
+            print(f'{count}of' + len(self.frames))
             mob = Mobject(*[
                 Tex(char).shift(0.3*x*RIGHT)
                 for char, x, in zip(str(count), it.count())

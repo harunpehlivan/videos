@@ -864,7 +864,7 @@ class TableOfContents(Scene):
         icon.center()
         icon.set_width(FRAME_WIDTH/12.)
         icon.set_stroke(color = WHITE, width = 0)
-        icons = [icon.copy() for chapter in chapters.split()]
+        icons = [icon.copy() for _ in chapters.split()]
         colors = Color(BLUE_A).range_to(BLUE_D, len(icons))
         for icon, color in zip(icons, colors):
             icon.set_fill(color, opacity = 1)

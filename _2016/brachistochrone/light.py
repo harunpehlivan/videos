@@ -425,10 +425,10 @@ class LightIsFasterInAirThanWater(ShowMultiplePathsInWater):
         self.add(glass)
         self.play(ShimmerIn(equation))
         self.wait()
-        photon_runs = []
-        photon_runs.append(self.photon_run_along_path(
-            path1, rate_func = lambda t : min(1, 1.2*t)
-        ))
+        photon_runs = [
+            self.photon_run_along_path(path1, rate_func=lambda t: min(1, 1.2 * t))
+        ]
+
         photon_runs.append(self.photon_run_along_path(path2))
         self.play(*photon_runs, **{"run_time" : 2})
         self.wait()

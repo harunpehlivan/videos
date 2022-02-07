@@ -52,10 +52,7 @@ class ClosedLoopScene(Scene):
         return Polygon(*self.square_vertices)
 
     def get_rect_vertex_dots(self, square = False):
-        if square:
-            vertices = self.square_vertices
-        else:
-            vertices = self.rect_vertices
+        vertices = self.square_vertices if square else self.rect_vertices
         dots = VGroup(*[Dot(v) for v in vertices])
         dots.set_color(self.dot_color)
         return dots
@@ -115,7 +112,7 @@ class ClosedLoopScene(Scene):
         ] + [Animation(self.dots)]
 
     def get_dot_alphas(self, dots = None, precision = 0.005):
-        if dots == None:
+        if dots is None:
             dots = self.dots
         alphas = []
         alpha_range = np.arange(0, 1, precision)
@@ -556,7 +553,7 @@ class RectangleProperties(Scene):
             Line(d1.get_center(), d2.get_center(), color = c)
             for (d1, d2), c in zip(dot_pairs, colors)
         ]
-        braces = [Brace(rect).next_to(ORIGIN, DOWN) for x in range(2)]
+        braces = [Brace(rect).next_to(ORIGIN, DOWN) for _ in range(2)]
         for brace, line in zip(braces, diag_lines):
             brace.stretch_to_fit_width(line.get_length())
             brace.rotate(line.get_angle())
@@ -962,7 +959,7 @@ class DefineUnorderedPair(ClosedLoopScene):
         for label, arrow_pair in zip(labels, arrow_pairs):
             self.play(*list(map(FadeIn, [label, arrow_pair])))
             self.wait()
-        for x in range(2):
+        for _ in range(2):
             self.play(
                 dots[0].move_to, dots[1],
                 dots[1].move_to, dots[0],
@@ -1555,10 +1552,7 @@ class FoldUnitSquare(EdgesOfSquare):
         for x in xs:
             point = self.get_point_from_coords(x, x)
             dot = Dot(point)
-            if x is xs[-1]:
-                label = Tex("(x, x)")
-            else:
-                label = Tex("(%.1f, %.1f)"%(x, x))
+            label = Tex("(x, x)") if x is xs[-1] else Tex("(%.1f, %.1f)"%(x, x))
             label.next_to(dot, UP+LEFT, buff = SMALL_BUFF)
             VGroup(dot, label).set_color(RED)
             if old_label is None:

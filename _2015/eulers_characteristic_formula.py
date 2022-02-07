@@ -69,10 +69,7 @@ class IllustrateDuality(GraphScene):
         def special_alpha(t):
             if t > 0.5:
                 t = 1 - t
-            if t < 0.25:
-                return smooth(4*t)
-            else:
-                return 1
+            return smooth(4*t) if t < 0.25 else 1
         kwargs = {
             "run_time" : 5.0,
             "rate_func" : special_alpha
@@ -716,9 +713,9 @@ class ExamplesOfGraphs(GraphScene):
         self.add(words2)
 
         region_pairs = it.combinations(self.graph.region_cycles, 2)
+        found = False
         for x in range(6):
             want_matching = (x%2 == 0)
-            found = False
             while True:
                 try:
                     cycle1, cycle2 = next(region_pairs)

@@ -121,16 +121,13 @@ class DifferentConceptions(Scene):
         two_dimensional.to_corner(UP+RIGHT)
         three_dimensional.to_corner(UP+RIGHT)
 
-        random_vectors = VMobject(*[
-            Vector(
+        random_vectors = VMobject(*[Vector(
                 random.uniform(-2, 2)*RIGHT + \
                 random.uniform(-2, 2)*UP
             ).shift(
                 random.uniform(0, 4)*RIGHT + \
                 random.uniform(-1, 2)*UP
-            ).set_color(random_color())
-            for x in range(5)
-        ])
+            ).set_color(random_color()) for _ in range(5)])
 
         self.play(
             Transform(original_vector, vector),
@@ -157,7 +154,7 @@ class DifferentConceptions(Scene):
                 in_place = True,
                 run_time = 1
             ))
-        self.play(ApplyMethod(physy.change_mode, "plain")) 
+        self.play(ApplyMethod(physy.change_mode, "plain"))
         self.remove(direction)
         for point in 2*UP, 4*RIGHT, ORIGIN:
             self.play(ApplyMethod(vector.move_to, point))
